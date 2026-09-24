@@ -4,6 +4,18 @@ import StatusMessage from '../components/StatusMessage.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { api } from '../services/api.js';
 
+// eslint-disable-next-line react-refresh/only-export-components
+export function filterProducts(products, search, category) {
+  const query = search.trim().toLowerCase();
+
+  return products.filter((product) => {
+    const matchesSearch = product.name.toLowerCase().includes(query)
+      || product.description.toLowerCase().includes(query);
+    const matchesCategory = category === 'All' || product.category === category;
+    return matchesSearch && matchesCategory;
+  });
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
@@ -26,11 +38,7 @@ export default function ProductsPage() {
     [products]
   );
 
-  const visibleProducts = products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(search.trim().toLowerCase());
-    const matchesCategory = category === 'All' || product.category === category;
-    return matchesSearch && matchesCategory;
-  });
+  const visibleProducts = filterProducts(products, search, category);
 
   return (
     <section>
