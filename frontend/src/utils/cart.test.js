@@ -1,7 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { addProductToCart, calculateCartTotal, updateCartQuantity } from './cart.js';
+import { addProductToCart, calculateCartItemCount, calculateCartTotal, updateCartQuantity } from './cart.js';
 
 describe('cart utilities', () => {
+  it('counts all item quantities and returns zero for an empty cart', () => {
+    expect(calculateCartItemCount([{ quantity: 2 }, { quantity: 3 }])).toBe(5);
+    expect(calculateCartItemCount([])).toBe(0);
+  });
+
   it('calculates the cart total', () => {
     expect(calculateCartTotal([
       { price: 100, quantity: 2 },

@@ -9,7 +9,7 @@ export default function ProductCard({ product, onAddToCart }) {
       <p className="product-description">{product.description}</p>
       <p className="price">₱{Number(product.price).toLocaleString('en-PH', { minimumFractionDigits: 2 })}</p>
       <p className={product.stock > 0 ? 'stock' : 'stock unavailable'}>
-        {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+        {product.stock === 0 ? 'Out of stock' : product.stock <= 8 ? `Only ${product.stock} left` : `${product.stock} in stock`}
       </p>
       <div className="card-actions">
         <Link className="button secondary" to={`/products/${product.id}`}>Details</Link>
