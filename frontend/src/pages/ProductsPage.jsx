@@ -16,10 +16,20 @@ export function filterProducts(products, search, category) {
   });
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
+export function sortProducts(products, sortOrder) {
+  const sorted = [...products];
+  if (sortOrder === 'price-asc') sorted.sort((a, b) => Number(a.price) - Number(b.price));
+  if (sortOrder === 'price-desc') sorted.sort((a, b) => Number(b.price) - Number(a.price));
+  if (sortOrder === 'name-asc') sorted.sort((a, b) => a.name.localeCompare(b.name));
+  return sorted;
+}
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
+  const [sortOrder, setSortOrder] = useState('default');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { addToCart, cartMessage } = useCart();
@@ -38,7 +48,7 @@ export default function ProductsPage() {
     [products]
   );
 
-  const visibleProducts = filterProducts(products, search, category);
+  const visibleProducts = sortProducts(filterProducts(products, search, category), sortOrder);
 
   return (
     <section>
@@ -59,6 +69,15 @@ export default function ProductsPage() {
           <span>Category</span>
           <select value={category} onChange={(event) => setCategory(event.target.value)}>
             {categories.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Sort</span>
+          <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value)}>
+            <option value="default">Default</option>
+            <option value="price-asc">Price low to high</option>
+            <option value="price-desc">Price high to low</option>
+            <option value="name-asc">Name A to Z</option>
           </select>
         </label>
       </div>
