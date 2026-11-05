@@ -1,19 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ProductCard from '../components/ProductCard.jsx';
 import StatusMessage from '../components/StatusMessage.jsx';
 import { useCart } from '../context/CartContext.jsx';
 import { api } from '../services/api.js';
 
 // eslint-disable-next-line react-refresh/only-export-components
-export function filterProducts(products, search, category) {
-  const query = search.trim().toLowerCase();
-
-  return products.filter((product) => {
-    const matchesSearch = product.name.toLowerCase().includes(query)
-      || product.description.toLowerCase().includes(query);
-    const matchesCategory = category === 'All' || product.category === category;
-    return matchesSearch && matchesCategory;
-  });
+export function filterProducts(products, category) {
+  return products.filter((product) => category === 'All' || product.category === category);
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -29,26 +22,48 @@ export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('All');
+  const [categories, setCategories] = useState(['All']);
+  const categoriesLoaded = useRef(false);
   const [sortOrder, setSortOrder] = useState('default');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [categoryError, setCategoryError] = useState('');
   const { addToCart, cartMessage } = useCart();
 
   useEffect(() => {
     let active = true;
-    api.getProducts()
-      .then((data) => active && setProducts(data.products))
-      .catch((caught) => active && setError(caught.message))
-      .finally(() => active && setLoading(false));
+    setLoading(true);
+    setError('');
+
+    api.getProducts(search)
+      .then((data) => {
+        if (active) setProducts(data.products);
+      })
+      .catch((caught) => {
+        if (active) setError(caught.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+
+    // Category choices load independently from the full catalog.
+    if (!categoriesLoaded.current) {
+      setCategoryError('');
+      api.getProducts()
+        .then((catalog) => {
+          if (!active) return;
+          setCategories(['All', ...new Set(catalog.products.map((product) => product.category))]);
+          categoriesLoaded.current = true;
+        })
+        .catch((caught) => {
+          if (active) setCategoryError(`Could not load categories: ${caught.message} Change the search to retry.`);
+        });
+    }
+    // Obsolete requests cannot update results, messages, or loading state.
     return () => { active = false; };
-  }, []);
+  }, [search]);
 
-  const categories = useMemo(
-    () => ['All', ...new Set(products.map((product) => product.category))],
-    [products]
-  );
-
-  const visibleProducts = sortProducts(filterProducts(products, search, category), sortOrder);
+  const visibleProducts = sortProducts(filterProducts(products, category), sortOrder);
 
   return (
     <section>
@@ -83,12 +98,13 @@ export default function ProductsPage() {
       </div>
 
       <StatusMessage>{cartMessage}</StatusMessage>
+      {categoryError && <StatusMessage type="error">{categoryError}</StatusMessage>}
       {loading && <StatusMessage>Loading products…</StatusMessage>}
       {error && <StatusMessage type="error">{error} Make sure the backend is running.</StatusMessage>}
       {!loading && !error && visibleProducts.length === 0 && <StatusMessage>No products match your filters.</StatusMessage>}
 
       <div className="product-grid">
-        {visibleProducts.map((product) => (
+        {!loading && !error && visibleProducts.map((product) => (
           <ProductCard key={product.id} product={product} onAddToCart={addToCart} />
         ))}
       </div>
