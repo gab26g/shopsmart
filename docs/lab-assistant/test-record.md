@@ -1,6 +1,6 @@
-# Trace grounded assistant test record
+# ShopSmart grounded assistant test record
 
-Date: November 5, 2026, Asia/Manila. Individual activity. Branch: `codex/trace-grounded-product-assistant`. Exact submitted commit is recorded in SUBMISSION.txt in the submission ZIP.
+Date: November 5, 2026, Asia/Manila. Individual activity. Branch: `codex/grounded-product-assistant`. Exact submitted commit is recorded in SUBMISSION.txt in the submission ZIP.
 
 ## Required six cases
 

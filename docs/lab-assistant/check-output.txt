@@ -1,3 +1,4 @@
+Local absolute worktree paths normalized for presentation; check output otherwise unchanged.
 
 > shopsmart-starter@1.0.0 check
 > npm run lint --workspace frontend && npm run lint --workspace backend && npm run test && npm run build
@@ -19,7 +20,7 @@
 > vitest run
 
 
- RUN  v3.2.7 C:/Users/Gab/.codex/worktrees/trace-assistant/ShopSmart-Starter/frontend
+ RUN  v3.2.7 [local worktree]/frontend
 
  ✓ src/utils/cart.test.js (4 tests) 7ms
  ✓ src/pages/ProductsPage.test.jsx (14 tests) 32ms

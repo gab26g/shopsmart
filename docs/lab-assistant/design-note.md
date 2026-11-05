@@ -1,6 +1,6 @@
 # ShopSmart grounded product assistant
 
-Individual activity by Trace. Implementation branch: `codex/trace-grounded-product-assistant`.
+Individual activity. Implementation branch: `codex/grounded-product-assistant`.
 
 ## Request flow
 

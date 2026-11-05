@@ -1,6 +1,6 @@
-# Run Trace's grounded assistant version
+# Run the grounded assistant version
 
-Use branch `codex/trace-grounded-product-assistant` and the exact commit in the submission manifest. Do not merge another student's competing implementation into this version merely to run it.
+Use branch `codex/grounded-product-assistant` and the exact commit in the submission manifest. Do not merge another student's competing implementation into this version merely to run it.
 
 Follow the root README for a new local installation. Existing installations need PostgreSQL running, dependencies installed from the lockfile, and Prisma Client generated. Do not reseed an existing database: seeding deletes orders and replaces products.
 
