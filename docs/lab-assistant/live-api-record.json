@@ -1,0 +1,63 @@
+[
+  {
+    "question": "Which keyboard is below PHP 2000?",
+    "status": 200,
+    "body": {
+      "answer": "AI recommendations are temporarily unavailable. Here are matching products from the current catalog.\nCompact Mechanical Keyboard — PHP 1850.00; 4 in stock. Hot-swappable compact keyboard with tactile switches.",
+      "recommendedProducts": [
+        {
+          "id": 2,
+          "name": "Compact Mechanical Keyboard",
+          "price": 1850,
+          "category": "Accessories"
+        }
+      ],
+      "sources": [
+        {
+          "type": "product",
+          "id": 2,
+          "name": "Compact Mechanical Keyboard"
+        }
+      ]
+    },
+    "factsValid": true,
+    "sourcesValid": true
+  },
+  {
+    "question": "Recommend a refrigerator below PHP 2000",
+    "status": 200,
+    "body": {
+      "answer": "I could not find an in-stock product matching that request. Try another product type or a higher budget.",
+      "recommendedProducts": [],
+      "sources": []
+    },
+    "factsValid": true,
+    "sourcesValid": true
+  },
+  {
+    "question": "mouse",
+    "status": 200,
+    "body": {
+      "answer": "I could not find an in-stock product matching that request. Try another product type or a higher budget.",
+      "recommendedProducts": [],
+      "sources": []
+    },
+    "factsValid": true,
+    "sourcesValid": true
+  },
+  {
+    "question": "x",
+    "status": 422,
+    "body": {
+      "error": {
+        "code": "INVALID_QUESTION",
+        "message": "Question must contain between 3 and 300 characters."
+      }
+    },
+    "factsValid": true,
+    "sourcesValid": true
+  },
+  {
+    "providerCode": "GEMINI_UNAVAILABLE"
+  }
+]

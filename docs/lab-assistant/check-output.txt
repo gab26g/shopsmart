@@ -1,0 +1,107 @@
+
+> shopsmart-starter@1.0.0 check
+> npm run lint --workspace frontend && npm run lint --workspace backend && npm run test && npm run build
+
+
+> shopsmart-frontend@1.0.0 lint
+> eslint .
+
+
+> shopsmart-backend@1.0.0 lint
+> eslint .
+
+
+> shopsmart-starter@1.0.0 test
+> npm run test --workspace frontend && npm run test --workspace backend
+
+
+> shopsmart-frontend@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.7 C:/Users/Gab/.codex/worktrees/trace-assistant/ShopSmart-Starter/frontend
+
+ ✓ src/utils/cart.test.js (4 tests) 7ms
+ ✓ src/pages/ProductsPage.test.jsx (14 tests) 32ms
+ ✓ src/pages/AssistantPage.test.jsx (7 tests) 305ms
+ ✓ src/pages/ProductsPage.live.test.jsx (9 tests) 561ms
+
+ Test Files  4 passed (4)
+      Tests  34 passed (34)
+   Start at  19:49:41
+   Duration  5.94s (transform 432ms, setup 0ms, collect 1.05s, tests 905ms, environment 8.07s, prepare 1.33s)
+
+
+> shopsmart-backend@1.0.0 test
+> node --test
+
+✔ assistant route validates, awaits result and selects public in-stock products (240.2215ms)
+✔ budget parsing preserves decimals and requires a shopping cue (3.5629ms)
+✔ retrieval requires relevance, active stock and exact budget boundaries (1.8448ms)
+✔ retrieval deterministically limits to three by relevance, price then ID (0.6064ms)
+✔ requested product type outranks shared adjectives and connection words (0.9869ms)
+✔ k budget suffixes preserve decimal values and exclusive boundaries (0.5646ms)
+✔ minimum budgets preserve direction and inclusive or exclusive boundaries (6.2775ms)
+✔ no match returns empty sources and never calls the provider (0.4509ms)
+✔ provider receives only public facts and catalog-anchored question terms (1.1017ms)
+✔ valid reordered draft controls selection using catalog facts only (0.8676ms)
+✔ invalid provider unknown falls back to grounded catalog recommendations (0.8894ms)
+✔ invalid provider price falls back to grounded catalog recommendations (0.5775ms)
+✔ invalid provider stock falls back to grounded catalog recommendations (0.3835ms)
+✔ invalid provider duplicate falls back to grounded catalog recommendations (0.4999ms)
+✔ invalid provider prose falls back to grounded catalog recommendations (0.4613ms)
+✔ invalid provider extra falls back to grounded catalog recommendations (0.7956ms)
+✔ invalid provider empty falls back to grounded catalog recommendations (0.5214ms)
+✔ invalid provider nonfinite falls back to grounded catalog recommendations (0.4651ms)
+✔ provider failure is sanitized and returns useful catalog fallback (0.5784ms)
+✔ requests structured drafts using only public catalog facts (59.5821ms)
+✔ supports an explicitly configured model (3.9891ms)
+✔ missing key fails safely before creating a provider client (2.9846ms)
+✔ 429 is attempted once and provider error details never escape (3.4898ms)
+✔ deadline aborts the actual SDK HTTP request without retrying (37.3087ms)
+✔ deadline settles even when a faulty client ignores cancellation (14.4777ms)
+✔ malformed provider draft is rejected safely: "not json" (2.0422ms)
+✔ malformed provider draft is rejected safely: "" (1.6481ms)
+✔ malformed provider draft is rejected safely: "null" (1.5598ms)
+✔ malformed provider draft is rejected safely: "[]" (1.5891ms)
+✔ malformed provider draft is rejected safely: "\"unexpected\"" (1.6054ms)
+✔ client construction failures are sanitized (0.5001ms)
+✔ semantic draft mistakes remain available for orchestrator validation (4.0571ms)
+GET /api/products?search=%20PrIvAcY%20 200 3.902 ms
+▶ catalog route preserves its response and searches both fields on active products
+  ✔ description query returns numeric prices in the existing envelope (73.9598ms)
+GET /api/products 200 0.589 ms
+  ✔ empty query returns the active catalog:  (9.223ms)
+GET /api/products?search=%20%20 200 0.516 ms
+  ✔ empty query returns the active catalog: ?search=%20%20 (5.0732ms)
+GET /api/products?search=notfoundword 200 0.584 ms
+  ✔ no matches return an empty products array (5.7182ms)
+✔ catalog route preserves its response and searches both fields on active products (153.6693ms)
+✔ a valid classroom order passes validation (8.6076ms)
+✔ duplicate products fail order validation (1.1296ms)
+✔ an oversized assistant question fails validation (1.3137ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1488.4155
+
+> shopsmart-starter@1.0.0 build
+> npm run build --workspace frontend
+
+
+> shopsmart-frontend@1.0.0 build
+> vite build
+
+vite v7.3.6 building client environment for production...
+transforming...
+✓ 52 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.50 kB │ gzip:  0.31 kB
+dist/assets/index-cgs7A35P.css    4.94 kB │ gzip:  1.66 kB
+dist/assets/index-Dhpr1S6P.js   274.69 kB │ gzip: 86.82 kB
+✓ built in 2.63s

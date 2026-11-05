@@ -11,10 +11,13 @@ router.post('/questions', assistantLimiter, async (request, response, next) => {
   try {
     const parsed = assistantQuestionSchema.safeParse(request.body);
     if (!parsed.success) return response.status(422).json({ error: { code: 'INVALID_QUESTION', message: 'Question must contain between 3 and 300 characters.' } });
-    const products = await prisma.product.findMany({ where: { active: true }, orderBy: { price: 'asc' } });
-    response.json(buildAssistantResponse(products, parsed.data.question));
+    const products = await prisma.product.findMany({
+      where: { active: true, stock: { gt: 0 } },
+      select: { id: true, name: true, description: true, category: true, price: true, stock: true },
+      orderBy: { price: 'asc' }
+    });
+    response.json(await buildAssistantResponse(products, parsed.data.question));
   } catch (error) { next(error); }
 });
 
-// WEEK 5 IMPROVEMENT: Replace rule-based ranking with retrieval plus a server-side AI provider call.
 export default router;

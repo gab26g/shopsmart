@@ -1,0 +1,34 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import express from 'express';
+import router from '../src/routes/assistant.js';
+import { prisma } from '../src/lib/prisma.js';
+
+test('assistant route validates, awaits result and selects public in-stock products', async (t) => {
+  let query;
+  const originalFindMany = prisma.product.findMany;
+  t.after(() => { prisma.product.findMany = originalFindMany; });
+  prisma.product.findMany = async (input) => { query = input; return []; };
+  const app = express();
+  app.use(express.json());
+  app.use('/api/assistant', router);
+  app.use((_error, _request, response, _next) => response.status(500).json({ error: { code: 'INTERNAL_ERROR' } }));
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise((resolve) => server.once('listening', resolve));
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  const endpoint = `http://127.0.0.1:${server.address().port}/api/assistant/questions`;
+  const post = (question) => fetch(endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ question }) });
+  for (const question of ['  ', 'a'.repeat(301)]) assert.equal((await post(question)).status, 422);
+  assert.equal(query, undefined);
+  const response = await post('  mouse  ');
+  assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).sources, []);
+  assert.deepEqual(query.where, { active: true, stock: { gt: 0 } });
+  assert.deepEqual(query.select, { id: true, name: true, description: true, category: true, price: true, stock: true });
+  prisma.product.findMany = async () => { throw new Error('private database detail'); };
+  const failed = await post('mouse');
+  assert.equal(failed.status, 500);
+  assert.doesNotMatch(JSON.stringify(await failed.json()), /private/);
+  for (let count = 0; count < 17; count += 1) await post('mouse');
+  assert.equal((await post('mouse')).status, 429);
+});
