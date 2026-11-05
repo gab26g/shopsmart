@@ -290,7 +290,14 @@ All remaining npm commands are the same as the Windows instructions.
 5. Open http://localhost:5173.
 6. Press `Ctrl+C` when finished.
 
-You do not need to repeat `npm install`, migration or seeding every day.
+For daily startup, confirm that you are in the ShopSmart project root, start PostgreSQL, and run `npm run dev`; dependency installation, migration, and seeding are not daily startup steps.
+
+### Daily startup checklist
+- Open the project root containing package.json, frontend, and backend.
+- Keep your existing local environment files; do not overwrite them for daily startup.
+- Start PostgreSQL and run `npm run dev`.
+- Check http://localhost:3000/api/health and open http://localhost:5173.
+- Stop the development process with Ctrl+C when finished.
 
 ## Common problems
 
