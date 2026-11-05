@@ -290,7 +290,7 @@ All remaining npm commands are the same as the Windows instructions.
 5. Open http://localhost:5173.
 6. Press `Ctrl+C` when finished.
 
-For daily startup, confirm that you are in the ShopSmart project root, start PostgreSQL, and run `npm run dev`; dependency installation, migration, and seeding are not daily startup steps.
+For daily startup, confirm that you are in the ShopSmart project root, start PostgreSQL, and run `npm run dev`; dependency installation, migration, and seeding are not daily startup steps. If products are missing, check the API health endpoint and database connection first. Do not reseed an existing database because reseeding deletes classroom orders and replaces products.
 
 ### Daily startup checklist
 - Open the project root containing package.json, frontend, and backend.
@@ -315,7 +315,11 @@ Stop the previous ShopSmart process with `Ctrl+C`. Do not change ports unless th
 
 ### Products do not appear
 
-Verify http://localhost:3000/api/health, then run `npm run db:seed` and restart `npm run dev`.
+Check http://localhost:3000/api/health first. If it fails, confirm PostgreSQL is running and inspect the backend terminal for an error. Check local database settings without sharing environment file contents.
+
+If health succeeds, check http://localhost:3000/api/products. Clear search and category filters and inspect whether the API returns the expected active products.
+
+Do not run `npm run db:seed` on an existing database just because the page is empty. It deletes classroom orders and replaces products. Seed only during the documented setup of a new classroom database.
 
 ### The browser reports a CORS error
 
