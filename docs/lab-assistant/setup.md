@@ -26,6 +26,8 @@ npm.cmd run dev
 
 Open http://localhost:5173/assistant. Ask which keyboard is below PHP2000. Check the visible source against its detail page. Ask for a refrigerator for no match. Missing/unavailable credentials or provider failure produce a clearly labeled catalog fallback; no-match does not call the provider. The application uses a 10-second provider deadline without automatic retries.
 
+The shopping desk has example-question buttons. Selecting one fills and focuses the composer; click **Find my match** to submit. Results appear underneath in **Your shortlist**, with source links in **Check the details**. No-match results use the heading **No match this time**.
+
 ```powershell
 npm.cmd run check
 ```

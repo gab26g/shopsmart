@@ -15,7 +15,7 @@ Date: November 5, 2026, Asia/Manila. Individual activity. Branch: `codex/grounde
 
 ## Project checks and regression evidence
 
-`npm run check` passed: 34 frontend tests, 40 backend tests (including nested cases), both lint checks, and frontend production build. Actual output is in check-output.txt. Tests isolate provider transport and catalog persistence; automated checks do not place orders or change live stock.
+`npm run check` passed: 35 frontend tests, 40 backend tests (including nested cases), both lint checks, and frontend production build. Actual output is in check-output.txt. Tests isolate provider transport and catalog persistence; automated checks do not place orders or change live stock.
 
 Browser checks: catalog browsing worked; `privacy` returned the webcam; Study with ascending price showed lamp PHP900 before stand PHP1200. Added keyboard temporarily, increased quantity to 2, and checked checkout review total PHP3700. Did not submit an order. Removed only that temporary cart item afterward.
 
@@ -24,10 +24,19 @@ Initial test evidence: seven frontend regressions failed before implementation. 
 ## Screenshot register
 
 - 00-baseline.png: original rule-based page returning unrelated lamp and stand for keyboard.
-- 01-catalog-match.png: final successful Gemini-backed keyboard result and product/source links. Live service recovered after the observed high-demand failure.
+- 01-catalog-match.png: final redesigned keyboard result with actual price and product/source links. The normal provider configuration was unavailable during this recapture, so the visible answer is explicitly labeled as a catalog fallback; earlier successful live integration remains recorded above.
 - 02-no-match.png: refrigerator request with no invented recommendations.
-- 03-provider-failure.png: real failed-provider fallback, not a mocked screenshot.
+- 03-provider-failure.png: actual app running against a temporary backend with an intentionally invalid model setting, on frontend port 5174 / API port 3001. The genuine fallback is captured; saved private configuration is unchanged.
 - 04-source-product.png: actual linked keyboard detail page supporting price and availability.
+- 05-mobile-fallback.png: redesigned fallback at a 390-pixel viewport, with no horizontal page overflow.
+
+## Interface revision
+
+The final assistant uses a single-column shopping desk with warm neutral surfaces, rust accents, a compact question composer, example-question buttons, full-width recommendation rows and separate catalog sources. The examples fill and focus the question without sending it. The new regression test verifies this behavior. Match, no-match and provider-failure screenshots were recaptured from the redesigned page. The original baseline is deliberately retained as historical evidence of the starter, not presented as the current interface. The source-detail page is outside the redesigned route.
+
+Desktop and 390-pixel mobile checks cover the revised page. Temporary failure-test servers use only process environment overrides and are stopped after capture; normal saved provider settings remain intact.
+
+The UI revision added example-question and label-agreement assertions. They failed before their corresponding changes and passed afterward. Review caught a visible/accessibility-label mismatch, corrected by matching both to Your question. A sandboxed full-check attempt could not connect to its own local HTTP test servers (EACCES); the final `npm run check` was rerun outside that sandbox and passed without weakening application security or changing backend behavior.
 
 ## Limitations and safeguards
 

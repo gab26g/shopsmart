@@ -39,6 +39,17 @@ afterEach(async () => {
   delete globalThis.IS_REACT_ACT_ENVIRONMENT;
 });
 describe('product assistant', () => {
+  it('lets a customer start from a suggested question without sending a request', async () => {
+    const field = host.querySelector('textarea');
+    const visibleLabel = field.labels[0].textContent;
+    expect(field.getAttribute('aria-label') || visibleLabel).toBe(visibleLabel);
+    const suggestion = [...host.querySelectorAll('button')].find((button) => button.textContent.includes('Keyboard under'));
+    expect(suggestion).toBeDefined();
+    await act(async () => suggestion.click());
+    expect(host.querySelector('textarea').value).toBe('Which keyboard is below ₱2,000?');
+    expect(requests).toHaveLength(0);
+    expect(document.activeElement).toBe(host.querySelector('textarea'));
+  });
   it('submits the question and announces catalog lookup while waiting', async () => {
     const request = await ask();
     expect(request.url).toMatch(/\/assistant\/questions$/);
@@ -46,9 +57,9 @@ describe('product assistant', () => {
     expect(JSON.parse(request.options.body)).toEqual({ question: 'keyboard below 2000' });
     expect(host.querySelector('[role="status"]').textContent).toMatch(/catalog/i);
     expect(host.textContent).not.toContain('Your answer will appear here.');
-    expect(host.querySelector('button').disabled).toBe(true);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(true);
     await respond(request);
-    expect(host.querySelector('button').disabled).toBe(false);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(false);
   });
   it('shows answer, recommendation and named product source links', async () => {
     await respond(await ask());
@@ -64,7 +75,7 @@ describe('product assistant', () => {
     expect(host.textContent).toContain('No catalog products match this request.');
     expect(host.textContent).toMatch(/try.*product.*budget/i);
     expect(host.querySelectorAll('.assistant-answer a')).toHaveLength(0);
-    expect(host.querySelector('button').disabled).toBe(false);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(false);
   });
   it('preserves fallback notices and renders server text safely', async () => {
     const answer = 'AI service unavailable. Catalog fallback: <img src=x onerror=alert(1)>';
@@ -77,7 +88,7 @@ describe('product assistant', () => {
     await respond(await ask(), { error: { message: 'Assistant temporarily unavailable.' } }, 503);
     expect(host.querySelector('[role="alert"]').textContent).toContain('Assistant temporarily unavailable.');
     expect(host.querySelector('[role="alert"]').textContent).toMatch(/try again/i);
-    expect(host.querySelector('button').disabled).toBe(false);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(false);
     expect(host.querySelector('textarea').value).toBe('keyboard below 2000');
     const retry = await ask();
     expect(host.querySelector('[role="alert"]')).toBe(null);
@@ -88,7 +99,7 @@ describe('product assistant', () => {
     const old = await ask('old question');
     const latest = await ask('latest question');
     await respond(old);
-    expect(host.querySelector('button').disabled).toBe(true);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(true);
     expect(host.textContent).not.toContain(match.answer);
     await respond(latest, { ...match, answer: 'Latest answer' });
     expect(host.textContent).toContain('Latest answer');
@@ -102,6 +113,6 @@ describe('product assistant', () => {
     expect(host.textContent).toContain('Latest answer');
     expect(host.textContent).not.toContain(match.answer);
     expect(host.querySelector('[role="alert"]')).toBe(null);
-    expect(host.querySelector('button').disabled).toBe(false);
+    expect(host.querySelector('button[type="submit"]').disabled).toBe(false);
   });
 });

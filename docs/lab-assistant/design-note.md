@@ -16,7 +16,7 @@ React question form → existing API helper → POST /api/assistant/questions �
 
 4. **No match and failure.** No eligible match produces an honest answer and empty recommendations/sources without calling Gemini. Missing credentials, provider unavailability, rate limits, timeout and invalid drafts use a deterministic catalog-backed fallback with a readable notice. A catalog-query failure remains an API error. The page ends loading and shows a readable result or error. Provider credentials and raw errors are not returned or logged.
 
-5. **Evidence and compatibility.** Preserve the existing endpoint, trimmed 3–300 character validation, HTTP 422 behavior and response fields. Test provider faults with controlled boundaries and verify live integration separately. Use current database facts, zero-stock fixtures, genuine screenshots and project checks. Never reseed to reset evidence; the seed script deletes classroom orders. Exact results and any remaining limitation are recorded in the accompanying test record.
+5. **Interface and evidence.** A single-column shopping desk groups a compact composer and example prompts above full-width results, product prices and source links. Examples fill the question without submitting it. Preserve the endpoint, 3–300 character validation, HTTP 422 and response fields. Test provider faults and live integration separately. Use current facts, fixtures, genuine screenshots and project checks. Never reseed for evidence; it deletes orders. Exact results and limitations appear in the test record.
 
 ## Official references
 
